@@ -1,3 +1,7 @@
 
 *.zip
+*.spec
+*.exe
 Others/
+build/
+__pycache__/
