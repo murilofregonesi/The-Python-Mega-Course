@@ -144,6 +144,7 @@ class Window:
 
     def close(self):
         print('Closed by the user.')
+        self.database.__del__()
         self.window.quit()
 
     def entry_replace(self, entry, text):
