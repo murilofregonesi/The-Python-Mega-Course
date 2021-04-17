@@ -6,3 +6,5 @@ Others/
 build/
 dist/
 __pycache__/
+venv/
+environment/
