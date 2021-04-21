@@ -49,19 +49,19 @@ for page_num in range(0, num_pages):
         #print(_property.prettify())
         price = _property.find('div', {'class': 'property-card__price'})
         try:
-            price = price.find('p').text.replace('R$','').replace(' ','').replace('.','')
+            price = int(price.find('p').text.replace('R$','').replace(' ','').replace('.',''))
         except:
             price = 'Sob consulta'
 
         area = _property.find('li', {'class': 'property-card__detail-area'}).\
             find('span', {'class': 'property-card__detail-value'}).text
-        area = area.replace(' ','').replace('.','')
+        area = int(area.replace(' ','').replace('.',''))
 
         condominio = None
         try:
             condominio = _property.find('div', {'class': 'property-card__price-details--condo'}).\
                 find('strong', {'class': 'js-condo-price'}).text
-            condominio = condominio.replace('R$','').replace(' ','').replace('.','')
+            condominio = int(condominio.replace('R$','').replace(' ','').replace('.',''))
         except:
             pass
 
