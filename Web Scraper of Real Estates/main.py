@@ -6,12 +6,20 @@ from win10toast import ToastNotifier
 
 
 # set filters
+_local = 'sp/sorocaba'
 price_lim = (75e3, 180e3)
 area_lim = (750, 2500)
 com = '&com=condominio-fechado'
 
+print('Python Script...')
+print(f"Encontrar terrenos em {_local.replace('/', ' ').upper()}")
+print(f'Valor entre R$ {int(price_lim[0])} e R$ {int(price_lim[1])}')
+print(f'Área entre {area_lim[0]} e {area_lim[1]}')
+print('Em condomínio fechado')
+
+
 # get first page
-_url = 'https://www.vivareal.com.br/venda/sp/sorocaba/lote-terreno_residencial/'
+_url = f'https://www.vivareal.com.br/venda/{_local}/lote-terreno_residencial/'
 _filters = f'#area-desde={area_lim[0]}&area-ate={area_lim[1]}&preco-desde={price_lim[0]}&preco-ate={price_lim[1]}{com}'
 _headers = {'User-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0'}
 
@@ -26,7 +34,7 @@ soup = BeautifulSoup(page, "html.parser")
 data = []
 num_pages = len(soup.find_all('li', {'class':'pagination__item', 'data-type': 'number'}))
 for page_num in range(0, num_pages):
-    print(page_num+1)
+    print('Página '+str(page_num+1))
     if page_num > 0:
         req = Request(''.join([_url, f'?pagina={page_num}', _filters]), headers=_headers)
         url_data = urlopen(req)
@@ -80,7 +88,7 @@ for page_num in range(0, num_pages):
 
 # store scraping details
 df = pandas.DataFrame(data)
-df.drop_duplicates().to_excel('Resultado.xlsx')
+df.drop_duplicates().to_excel('C:/Users/muril/Desktop/Resultado.xlsx')
 
 if len(df) != len(df.drop_duplicates()):
     print(f'Reduction of data from {len(df)} to {len(df.drop_duplicates())} records.')
