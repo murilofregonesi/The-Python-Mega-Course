@@ -2,6 +2,7 @@ from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import pandas
 import time
+from win10toast import ToastNotifier
 
 
 # set filters
@@ -76,10 +77,6 @@ for page_num in range(0, num_pages):
         for amenitie in amenities:
             data[-1][amenitie.text] = 'Sim'
 
-        # TODO properties are repeating for every page
-        # TODO total properties is wrong
-        # TODO total pages different from browser or even Selenium
-
 
 # store scraping details
 df = pandas.DataFrame(data)
@@ -89,3 +86,6 @@ if len(df) != len(df.drop_duplicates()):
     print(f'Reduction of data from {len(df)} to {len(df.drop_duplicates())} records.')
 
 print(df.drop_duplicates())
+
+toaster = ToastNotifier()
+toaster.show_toast('Terrenos Atualizados', f'Encontrados {len(df.drop_duplicates())} terrenos.')
