@@ -7,7 +7,7 @@
 - [x] Bookshop Database App - A desktop GUI app with a database backend - *Check it out on [Google Drive](https://drive.google.com/file/d/1auMP2HbysW4r40NulzGJwEbyeCD54IOa/view?usp=sharing)*
 - [ ] Feel Good Mobile App - An Android & iOS app
 - [x] Webcam Motion Detector - Starts the webcam and detects moving objects
-- [ ] Real Estate Web Scraper - A program that extracts data from webpages
+- [x] Real Estate Web Scraper - A program that extracts data from webpages
 - [ ] Interactive Data Dashboard - A web-based fully interactive graph
 - [ ] Database Web App - A web app that collects data & sends emails
 - [ ] Geocoder Web App - A web app that converts addresses to coordinates

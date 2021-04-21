@@ -1,6 +1,7 @@
-import requests
+from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import pandas
+import time
 
 
 # set filters
@@ -13,8 +14,12 @@ _url = 'https://www.vivareal.com.br/venda/sp/sorocaba/lote-terreno_residencial/'
 _filters = f'#area-desde={area_lim[0]}&area-ate={area_lim[1]}&preco-desde={price_lim[0]}&preco-ate={price_lim[1]}{com}'
 _headers = {'User-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0'}
 
-page = requests.get(''.join([_url, _filters]), headers=_headers)
-soup = BeautifulSoup(page.content, "html.parser")
+req = Request(''.join([_url, _filters]), headers=_headers)
+url_data = urlopen(req)
+time.sleep(5)
+page = url_data.read().decode('utf-8')
+soup = BeautifulSoup(page, "html.parser")
+
 
 # pages loop
 data = []
@@ -22,8 +27,11 @@ num_pages = len(soup.find_all('li', {'class':'pagination__item', 'data-type': 'n
 for page_num in range(0, num_pages):
     print(page_num+1)
     if page_num > 0:
-        page = requests.get(''.join([_url, f'?pagina={page_num}', _filters]), headers=_headers)
-        soup = BeautifulSoup(page.content, "html.parser")
+        req = Request(''.join([_url, f'?pagina={page_num}', _filters]), headers=_headers)
+        url_data = urlopen(req)
+        time.sleep(5)
+        page = url_data.read().decode('utf-8')
+        soup = BeautifulSoup(page, "html.parser")
 
 
     # info collection
@@ -68,13 +76,16 @@ for page_num in range(0, num_pages):
         for amenitie in amenities:
             data[-1][amenitie.text] = 'Sim'
 
-    # TODO properties are repeating for every page
-    # TODO total properties is wrong
-    # TODO total pages different from browser or even Selenium
+        # TODO properties are repeating for every page
+        # TODO total properties is wrong
+        # TODO total pages different from browser or even Selenium
 
 
 # store scraping details
 df = pandas.DataFrame(data)
-df.to_excel('Resultado.xlsx')
+df.drop_duplicates().to_excel('Resultado.xlsx')
 
-print(df)
+if len(df) != len(df.drop_duplicates()):
+    print(f'Reduction of data from {len(df)} to {len(df.drop_duplicates())} records.')
+
+print(df.drop_duplicates())
