@@ -55,7 +55,10 @@ for page_num in range(0, num_pages):
 
         area = _property.find('li', {'class': 'property-card__detail-area'}).\
             find('span', {'class': 'property-card__detail-value'}).text
-        area = int(area.replace(' ','').replace('.',''))
+        try:
+            area = int(area.replace(' ','').replace('.',''))
+        except:
+            area = area.replace(' ','').replace('.','')
 
         condominio = None
         try:
